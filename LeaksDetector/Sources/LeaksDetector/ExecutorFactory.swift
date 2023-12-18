@@ -10,11 +10,21 @@ import ArgumentParser
 
 enum ExecutorType: String, CaseIterable, Codable, ExpressibleByArgument {
     case maestro
+    case file
 //    case xcuitest
-    
+
     static var supportedTypesDescription: String {
-        "Current support types are: maestro"
+        "Current support types are: maestro, file"
     }
+
+  var stepsToExecute: [Int] {
+    switch self {
+    case .maestro:
+      return [1, 2, 3]
+    case .file:
+      return [3]
+    }
+  }
 }
 
 enum ParameterKeys {
@@ -34,6 +44,8 @@ enum ExecutorFactory {
                     return nil
                 }
                 return MaestroExecutor(flowPath: flowPath)
+        case .file:
+          return FileExecutor()
         }
     }
 }

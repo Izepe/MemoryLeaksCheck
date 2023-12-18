@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:MemoryLeaksCheck}/LeaksDetector",
+            "name": "Debug leaksdetector (LeaksDetector)",
+            "program": "${workspaceFolder:MemoryLeaksCheck}/LeaksDetector/.build/debug/leaksdetector",
+            "preLaunchTask": "swift: Build Debug leaksdetector (LeaksDetector)"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:MemoryLeaksCheck}/LeaksDetector",
+            "name": "Release leaksdetector (LeaksDetector)",
+            "program": "${workspaceFolder:MemoryLeaksCheck}/LeaksDetector/.build/release/leaksdetector",
+            "preLaunchTask": "swift: Build Release leaksdetector (LeaksDetector)"
+        }
+    ]
+}
