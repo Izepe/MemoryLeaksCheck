@@ -51,20 +51,18 @@ final class MaestroExecutor: DefaultExecutor {
 final class FileExecutor: DefaultExecutor {
 
   let fm = FileManager.default
-  let memgraphsFolderPath: String = "/Diagnostics/"
   var memgraphs: [String] = []
   var memgraphCount = 0
 
-  override init() {
+  init(memgraphsFolderPath: String) {
     super.init()
-    let pathToRoot = #file.split(separator: "/").map({String($0)}).dropLast(4).reduce("", { $0 + "/" + $1 })
-    let pathToDiagnostics = pathToRoot + memgraphsFolderPath
-    let items = try! fm.contentsOfDirectory(atPath: pathToDiagnostics)
+
+    let items = try! fm.contentsOfDirectory(atPath: memgraphsFolderPath)
 
     for item in items {
       print("Found \(item)")
       guard item.contains(".memgraph") else { continue }
-      memgraphs.append(pathToDiagnostics + item)
+      memgraphs.append(memgraphsFolderPath + item)
     }
   }
 

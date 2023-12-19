@@ -16,6 +16,11 @@ struct LeaksDetector: ParsableCommand {
   private var executorType: ExecutorType = .file
   private var maestroFlowPath: String? = "/Users/hoanganhtuan/Desktop/MemoryLeaksCheck/maestro/leaksCheckFlow.yaml"
   private var dangerPath: String = "Dangerfile.leaksReport"
+  private var diagnosticsFolderPath: String = #file
+    .split(separator: "/")
+    .map({String($0)})
+    .dropLast(4)
+    .reduce("", { $0 + "/" + $1 }) + "/Diagnostics/"
 #else
 
   @Option(name: .long, help: "The name of the running process")
@@ -29,6 +34,9 @@ struct LeaksDetector: ParsableCommand {
 
   @Option(name: .shortAndLong, help: "The path to the Dangerfile")
   private var dangerPath: String
+
+  @Option(name: .shortAndLong, help: "The path to the Diagnostics folder with the memgraphs")
+  private var diagnosticsFolderPath: String
 #endif
 
   private var regex: String = ".*(\\d+) leaks for (\\d+) total leaked bytes.*"
@@ -154,6 +162,7 @@ extension LeaksDetector {
   private func prepareParams() -> ExecutorParameters {
     var params: [String: String] = [:]
     params[ParameterKeys.maestroFilePath] = maestroFlowPath
+    params[ParameterKeys.diagnosticsFolderPath] = diagnosticsFolderPath
     return params
   }
 
