@@ -20,6 +20,7 @@ func log(
 #if DEBUG
     debugPrint(message())
 #else
+    debugPrint(message())
     terminalController?.write(message(), inColor: color, bold: isBold)
     
     if needEndline {

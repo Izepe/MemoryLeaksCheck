@@ -94,9 +94,9 @@ struct LeaksDetector: ParsableCommand {
   }
 
   private func checkLeaks(by executor: Executor) throws {
+    let memgraphPath = executor.getMemgraphPath()
     do {
       log(message: "Start checking for leaks... ⚙️")
-      let memgraphPath = executor.getMemgraphPath()
 
       /// Running this script always throw error (somehow the leak tool throw error here) => So we need to process the memgraph in the `catch` block.
       try shellOut(to: "leaks", arguments: ["\(memgraphPath) -q"])
@@ -112,10 +112,17 @@ struct LeaksDetector: ParsableCommand {
       let numberOfLeaks = getNumberOfLeaks(from: numberOfLeaksMessage)
 
       if numberOfLeaks < 1 {
-        log(message: "Scan successfully. Don't find any leaks in the program! ✅", color: .green)
+        log(message: "Scan successfully. Didnt find any leaks in the memgraph:", color: .green)
+        log(message: "\(memgraphPath) ✅", color: .green)
         verifyOtherGraphs(by: executor)
         return
       }
+
+      // Send memgraph to remote storage if need
+      log(message: "Found leaks in the memgraph:")
+      log(message: " \(memgraphPath)! ❌", color: .red)
+      log(message: "Generating reports... ⚙️")
+      log(message: "🔎❌❌❌❌ Found \(numberOfLeaks) Leaks ❌❌❌❌🔎", color: .red)
 
       // Create a file to store the message, so that later Danger can read from that file
       let fileName = "temporary.txt"
@@ -124,9 +131,6 @@ struct LeaksDetector: ParsableCommand {
         try shellOut(to: "echo \(updatedMessage) >> \(fileName)")
       }
 
-      // Send memgraph to remote storage if need
-
-      log(message: "Founded leaks. Generating reports... ⚙️")
 
       do {
         try shellOut(to: "bundle exec danger --dangerfile=\(dangerPath) --danger_id=LeaksReport")
