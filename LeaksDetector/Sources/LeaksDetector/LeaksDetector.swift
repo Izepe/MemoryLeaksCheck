@@ -133,10 +133,10 @@ struct LeaksDetector: ParsableCommand {
 
 
       do {
-        try shellOut(to: "bundle exec danger --dangerfile=\(dangerPath) --danger_id=LeaksReport")
+        try shellOut(to: ["yarn --ignore-optional", "yarn danger --id=MEMORY_LEAK_REPORT"])
         log(message: "Done ✅", color: .green)
       } catch {
-        log(message: "❌ Can not execute Danger - \(dangerPath)", color: .red)
+        log(message: "❌ Can not execute Danger - \(error.localizedDescription)", color: .red)
       }
 
       cleanup(executor: executor, fileName: fileName)
