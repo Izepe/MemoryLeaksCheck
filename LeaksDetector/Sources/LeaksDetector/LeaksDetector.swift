@@ -133,7 +133,7 @@ struct LeaksDetector: ParsableCommand {
 
 
       do {
-        try shellOut(to: ["yarn --ignore-optional", "yarn danger --id=MEMORY_LEAK_REPORT"])
+        try shellOut(to: ["yarn --ignore-optional", "yarn danger ci --id=MEMORY_LEAK_REPORT"])
         log(message: "Done ✅", color: .green)
       } catch {
         log(message: "❌ Can not execute Danger - \(error.localizedDescription)", color: .red)
