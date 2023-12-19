@@ -136,7 +136,7 @@ struct LeaksDetector: ParsableCommand {
         try shellOut(to: "bundle exec danger --dangerfile=\(dangerPath) --danger_id=LeaksReport")
         log(message: "Done ✅", color: .green)
       } catch {
-        log(message: "❌ Can not execute Danger", color: .red)
+        log(message: "❌ Can not execute Danger - \(dangerPath)", color: .red)
       }
 
       cleanup(executor: executor, fileName: fileName)
